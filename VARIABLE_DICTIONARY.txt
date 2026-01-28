@@ -1,0 +1,206 @@
+"""
+KEY VARIABLES DICTIONARY FOR SLEEP APNEA STUDY
+===============================================
+
+This explains what each variable means and how it's coded in NHANES.
+Always check the official NHANES documentation PDFs for complete details.
+
+
+IDENTIFIER
+----------
+SEQN: Respondent sequence number (unique ID for each person)
+
+
+DEMOGRAPHICS (DEMO_J.xpt)
+--------------------------
+RIDAGEYR: Age in years at screening
+  - Range: 0-80 (80+ are coded as 80)
+
+RIAGENDR: Gender
+  - 1 = Male
+  - 2 = Female
+
+RIDRETH3: Race/Hispanic origin with NH Asian
+  - 1 = Mexican American
+  - 2 = Other Hispanic
+  - 3 = Non-Hispanic White
+  - 4 = Non-Hispanic Black
+  - 6 = Non-Hispanic Asian
+  - 7 = Other Race (including multi-racial)
+
+
+INCOME & SOCIOECONOMIC STATUS
+------------------------------
+INDFMPIR: Ratio of family income to poverty (from DEMO_J)
+  - Range: 0 to 5
+  - Values close to 0 = very poor
+  - Values at or above 5 = income is 5+ times poverty threshold
+  - This is your main INCOME variable!
+
+INDHHIN2: Total household income (from INQ_J)
+  - 1 = $0 to $4,999
+  - 2 = $5,000 to $9,999
+  - 3 = $10,000 to $14,999
+  - 4 = $15,000 to $19,999
+  - 5 = $20,000 to $24,999
+  - 6 = $25,000 to $34,999
+  - 7 = $35,000 to $44,999
+  - 8 = $45,000 to $54,999
+  - 9 = $55,000 to $64,999
+  - 10 = $65,000 to $74,999
+  - 12 = $20,000 and Over (combined category)
+  - 13 = Under $20,000 (combined category)
+  - 14 = $75,000 to $99,999
+  - 15 = $100,000 and Over
+  - 77 = Refused
+  - 99 = Don't know
+
+
+HOUSING CONDITIONS (HOQ_J.xpt)
+-------------------------------
+HOD050: Number of rooms in home
+  - Range: 1-13
+  - 13 = 13 or more rooms
+
+HOQ065: Home owned, bought, rented, or occupied
+  - 1 = Owned or being bought
+  - 2 = Rented
+  - 3 = Other arrangement
+  - 7 = Refused
+  - 9 = Don't know
+
+
+HEALTH INSURANCE / ACCESS (HIQ_J.xpt)
+--------------------------------------
+HIQ011: Are you covered by health insurance?
+  - 1 = Yes
+  - 2 = No
+  - 7 = Refused
+  - 9 = Don't know
+
+HIQ031A: Are you covered by private insurance?
+  - 14 = Covered by private insurance
+  - 77 = Refused
+  - 99 = Don't know
+
+HIQ031B: Are you covered by Medicare?
+  - 15 = Covered by Medicare
+  - 77 = Refused
+  - 99 = Don't know
+
+HIQ031D: Are you covered by Medicaid/CHIP?
+  - 17 = Covered by Medicaid/CHIP
+  - 77 = Refused
+  - 99 = Don't know
+
+
+SLEEP DISORDERS (SLQ_J.xpt) - YOUR PRIMARY OUTCOMES
+----------------------------------------------------
+SLQ050: Ever told a doctor or other health professional that you have trouble sleeping?
+  - 1 = Yes  ← KEY VARIABLE FOR SLEEP DISORDER DIAGNOSIS
+  - 2 = No
+  - 7 = Refused
+  - 9 = Don't know
+
+SLQ030: How often do you snore while sleeping?
+  - 0 = Never
+  - 1 = Rarely - 1-2 nights a week
+  - 2 = Occasionally - 3-4 nights a week
+  - 3 = Frequently - 5 or more nights a week
+  - 7 = Refused
+  - 9 = Don't know
+
+SLQ040: How often do you snort, gasp, or stop breathing?
+  - 0 = Never
+  - 1 = Rarely - 1-2 nights a week
+  - 2 = Occasionally - 3-4 nights a week
+  - 3 = Frequently - 5 or more nights a week
+  - 7 = Refused
+  - 9 = Don't know
+  - Note: This is a KEY indicator of sleep apnea!
+
+SLQ120: How often do you feel overly sleepy during the day?
+  - 0 = Never
+  - 1 = Rarely - 1 time a month
+  - 2 = Sometimes - 2-4 times a month
+  - 3 = Often - 5-15 times a month
+  - 4 = Almost always - 16-30 times a month
+  - 7 = Refused
+  - 9 = Don't know
+
+SLD012: Sleep hours - weekdays or workdays
+  - Range: 2-14 hours
+  - Continuous variable
+
+SLD013: Sleep hours - weekends
+  - Range: 2-14 hours
+  - Continuous variable
+
+
+BODY MEASURES (BMX_J.xpt)
+--------------------------
+BMXBMI: Body Mass Index (kg/m²)
+  - Continuous variable
+  - Important confounder - obesity is major risk factor for sleep apnea
+  - <18.5 = Underweight
+  - 18.5-24.9 = Normal
+  - 25-29.9 = Overweight
+  - 30+ = Obese
+
+
+CARDIOVASCULAR (CDQ_J.xpt)
+---------------------------
+CDQ001: Has a doctor ever told you that you had chest pain?
+  - 1 = Yes
+  - 2 = No
+  - 7 = Refused
+  - 9 = Don't know
+  - Important comorbidity related to sleep apnea
+
+
+SURVEY WEIGHTS (ESSENTIAL FOR ANALYSIS!)
+-----------------------------------------
+WTMEC2YR: Full sample 2-year MEC exam weight
+  - Use this when analyzing exam/lab variables (like BMI)
+
+WTINT2YR: Full sample 2-year interview weight
+  - Use this when analyzing questionnaire-only variables
+
+SDMVPSU: Masked variance pseudo-PSU
+  - Needed for variance estimation
+
+SDMVSTRA: Masked variance pseudo-stratum
+  - Needed for variance estimation
+
+WHY WEIGHTS MATTER:
+NHANES oversamples certain groups (elderly, minorities, low-income).
+Without weights, your results won't represent the US population!
+
+
+MISSING DATA CODES
+------------------
+Common missing/invalid codes across variables:
+- 7, 77, 777 = Refused
+- 9, 99, 999 = Don't know
+- . (blank) = Missing
+
+YOU MUST RECODE THESE AS MISSING (NaN) BEFORE ANALYSIS!
+
+
+RESEARCH TIPS
+-------------
+1. Your main outcome: SLQ050 (ever told doctor about sleep trouble)
+2. Secondary indicators: SLQ030, SLQ040 (snoring, stop breathing)
+3. Main predictors: INDFMPIR (income), HIQ011 (insurance), HOQ065 (housing)
+4. Important confounder: BMXBMI (obesity causes sleep apnea!)
+5. Always use survey weights in your analysis
+
+
+EXAMPLE RESEARCH QUESTIONS YOU CAN ANSWER
+------------------------------------------
+- Do people with lower income have higher rates of sleep disorders?
+- Does having health insurance affect sleep apnea diagnosis rates?
+- How do housing conditions relate to sleep quality?
+- What's the relationship between BMI and sleep apnea symptoms?
+- Do uninsured people report more untreated sleep problems?
+"""
